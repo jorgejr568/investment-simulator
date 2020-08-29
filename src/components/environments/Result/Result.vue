@@ -68,7 +68,10 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { GETTER_ESTIMATE } from '@/store/estimate'
+  import {
+    GETTER_ESTIMATE,
+    GETTER_ESTIMATE_FORM_CAN_SEND,
+  } from '@/store/estimate'
   import { moneyFormatFilter } from '@/filters/money-format'
   import { percentageFormatFilter } from '@/filters/percentage-format'
   export default {
@@ -76,6 +79,7 @@
     computed: {
       ...mapGetters({
         estimate: GETTER_ESTIMATE,
+        canViewResult: GETTER_ESTIMATE_FORM_CAN_SEND,
       }),
       rows() {
         const { estimate } = this
@@ -150,6 +154,9 @@
           ),
         ]
       },
+    },
+    mounted() {
+      if (!this.canViewResult) this.$router.push('/')
     },
   }
 </script>
