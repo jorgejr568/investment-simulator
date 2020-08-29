@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="4">
+      <v-col cols="12" md="6" lg="6">
         <v-card>
           <v-card-title>Simulador de investimento</v-card-title>
 

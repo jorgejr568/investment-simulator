@@ -6,6 +6,6 @@
   import EnvironmentsResult from '@/components/environments/Result/Result'
   export default {
     name: 'Result',
-    components: { EnvironmentsResult },
+    components: { EnvironmentsResult }
   }
 </script>

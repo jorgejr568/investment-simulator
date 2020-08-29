@@ -18,8 +18,12 @@
         </v-btn>
       </v-container>
     </v-app-bar>
-
     <v-main>
+      <v-row justify="center">
+        <v-col cols="auto" align-self="center">
+          <molecule-theme-switch />
+        </v-col>
+      </v-row>
       <Transition name="fade" mode="out-in">
         <router-view />
       </Transition>
@@ -28,8 +32,10 @@
 </template>
 
 <script>
+  import MoleculeThemeSwitch from '@/components/molecules/ThemeSwitch/ThemeSwitch'
   export default {
     name: 'App',
+    components: { MoleculeThemeSwitch },
   }
 </script>
 <style lang="scss">
