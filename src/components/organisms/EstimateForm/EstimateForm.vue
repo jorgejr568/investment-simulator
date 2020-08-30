@@ -60,7 +60,13 @@
     </v-col>
 
     <v-col cols="12">
-      <v-btn color="primary" block :disabled="!formCanSend" type="submit">
+      <v-btn
+        color="primary"
+        block
+        :disabled="!formCanSend"
+        type="submit"
+        {{...yearsOptions}}
+      >
         ENVIAR
       </v-btn>
     </v-col>

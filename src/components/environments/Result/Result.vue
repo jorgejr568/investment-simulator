@@ -3,47 +3,12 @@
     <v-row align-md="stretch">
       <v-col md="8" sm="12" order="2" order-md="1" order-sm="1">
         <v-card>
-          <v-card-title class="result-title">
-            <router-link to="/">
-              <v-icon dense>mdi-arrow-left</v-icon>
-            </router-link>
-            Resultado
+          <v-card-title>
+            <molecules-back-title to="/" title="Resultado" />
           </v-card-title>
-
           <v-row>
             <v-col>
-              <v-simple-table
-                fixed-header
-                height="500px"
-                class="custom-overflow-bar"
-              >
-                <template v-slot:default>
-                  <thead>
-                    <tr>
-                      <th>Mês</th>
-                      <th>Valor aplicado</th>
-                      <th>Rendimento mensal</th>
-                      <th>Valor acumulado</th>
-                    </tr>
-                  </thead>
-                  <tbody class="custom-overflow-bar">
-                    <tr
-                      v-for="{
-                        month,
-                        accumulated,
-                        contributionAmount,
-                        profitabilityPerMonth,
-                      } in rows"
-                      :key="month"
-                    >
-                      <td>{{ month }}</td>
-                      <td>{{ contributionAmount | moneyFormat }}</td>
-                      <td>{{ profitabilityPerMonth | percentageFormat }}</td>
-                      <td>{{ accumulated | moneyFormat }}</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
+              <organisms-result-table :rows="rows" height="500px" />
             </v-col>
           </v-row>
         </v-card>
@@ -52,14 +17,12 @@
         class="d-flex flex-wrap align-content-space-between order-1 order-sm-2 order-md-2"
       >
         <h3 class="mb-auto">Dados finais</h3>
-        <v-card
-          v-for="(info, key) in finalInfos"
+        <molecules-result-info
+          v-for="({ number, title }, key) in finalInfos"
           :key="key"
-          :style="{ width: '100%' }"
-        >
-          <v-card-title>{{ info.number }}</v-card-title>
-          <v-card-subtitle>{{ info.title }}</v-card-subtitle>
-        </v-card>
+          :number="number"
+          :title="title"
+        />
       </v-col>
     </v-row>
     <v-card> </v-card>
@@ -74,8 +37,16 @@
   } from '@/store/estimate'
   import { moneyFormatFilter } from '@/filters/money-format'
   import { percentageFormatFilter } from '@/filters/percentage-format'
+  import OrganismsResultTable from '@/components/organisms/ResultTable/ResultTable'
+  import MoleculesBackTitle from '@/components/molecules/BackTitle/BackTitle'
+  import MoleculesResultInfo from '@/components/molecules/ResultInfo/ResultInfo'
   export default {
     name: 'EnvironmentsResult',
+    components: {
+      MoleculesResultInfo,
+      MoleculesBackTitle,
+      OrganismsResultTable,
+    },
     computed: {
       ...mapGetters({
         estimate: GETTER_ESTIMATE,
@@ -160,27 +131,3 @@
     },
   }
 </script>
-
-<style scoped lang="scss">
-  .result-title {
-    display: flex;
-    justify-content: flex-start;
-    align-content: center;
-    a {
-      margin-right: 10px;
-      text-decoration: none;
-    }
-  }
-  tr {
-    th {
-      text-align: center !important;
-    }
-    td {
-      text-align: center;
-    }
-  }
-  .rows {
-    max-height: 100px !important;
-    overflow: auto;
-  }
-</style>
