@@ -69,16 +69,17 @@
         })
 
         let accumulated = 0
+        let { contributionPerMonth } = estimate
         for (
           let month = 1;
           month <= estimate.investmentDurationInMonths;
           month++
         ) {
+          if (month > 1 && month % 12 === 1)
+            contributionPerMonth += estimate.incomeGrowth
           let row = makeRow(
             month,
-            month === 1
-              ? estimate.initialAmount
-              : estimate.contributionPerMonth,
+            month === 1 ? estimate.initialAmount : contributionPerMonth,
             estimate.profitabilityPerMonth / 100,
             accumulated
           )

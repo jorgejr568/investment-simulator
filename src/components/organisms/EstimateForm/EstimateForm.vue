@@ -59,6 +59,28 @@
       />
     </v-col>
 
+    <v-col class="d-flex justify-center">
+      <v-switch
+        label="OPÇÕES AVANÇADAS"
+        @change="updateAdvancedOptionsEnabled"
+        :input-value="estimate.advancedOptionsEnabled"
+        inset
+        color="success"
+      />
+    </v-col>
+
+    <template v-if="estimate.advancedOptionsEnabled">
+      <v-col cols="12">
+        <v-text-field
+          label="Crescimento anual dos aporte"
+          @input="updateIncomeGrowth"
+          :value="estimate.incomeGrowth"
+          outlined
+          v-money="masks.money"
+        />
+      </v-col>
+    </template>
+
     <v-col cols="12">
       <v-btn color="primary" block :disabled="!formCanSend" type="submit">
         ENVIAR
@@ -70,7 +92,9 @@
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex'
   import {
+    ACTION_UPDATE_ESTIMATE_ADVANCED_OPTIONS_ENABLED,
     ACTION_UPDATE_ESTIMATE_CONTRIBUTION_PER_MONTH,
+    ACTION_UPDATE_ESTIMATE_INCOME_GROWTH,
     ACTION_UPDATE_ESTIMATE_INITIAL_AMOUNT,
     ACTION_UPDATE_ESTIMATE_INVESTMENT_DURATION_IN_MONTHS,
     ACTION_UPDATE_ESTIMATE_PROFITABILITY_PER_MONTH,
@@ -111,6 +135,8 @@
         updateInvestmentDurationInMonths: ACTION_UPDATE_ESTIMATE_INVESTMENT_DURATION_IN_MONTHS,
         updateContributionPerMonth: ACTION_UPDATE_ESTIMATE_CONTRIBUTION_PER_MONTH,
         updateProfitabilityPerMonth: ACTION_UPDATE_ESTIMATE_PROFITABILITY_PER_MONTH,
+        updateIncomeGrowth: ACTION_UPDATE_ESTIMATE_INCOME_GROWTH,
+        updateAdvancedOptionsEnabled: ACTION_UPDATE_ESTIMATE_ADVANCED_OPTIONS_ENABLED,
       }),
       selectYearOption(option) {
         this.updateInvestmentDurationInMonths(option * 12)
