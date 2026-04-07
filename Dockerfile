@@ -1,14 +1,14 @@
-FROM node:current-alpine3.12 as build
+FROM node:lts-alpine AS build
 WORKDIR /build
 
-COPY package.json .
-COPY yarn.lock .
+RUN corepack enable pnpm
 
-RUN yarn install --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
 COPY . .
-RUN yarn build
+RUN pnpm build
 
 FROM nginx:stable-alpine
-
 COPY --from=build /build/dist /usr/share/nginx/html
-
+EXPOSE 80
