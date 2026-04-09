@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useMemo } from 'react'
+import { createContext, useContext, useState, useMemo, useCallback } from 'react'
 
 const EstimateContext = createContext(null)
 
@@ -18,6 +18,10 @@ export function EstimateProvider({ children }) {
     setEstimate((prev) => ({ ...prev, [field]: value }))
   }
 
+  const hydrate = useCallback((values) => {
+    setEstimate((prev) => ({ ...prev, ...values }))
+  }, [])
+
   const canSubmit = useMemo(() => {
     return (
       estimate.initialAmount > 0 &&
@@ -28,7 +32,7 @@ export function EstimateProvider({ children }) {
   }, [estimate])
 
   return (
-    <EstimateContext.Provider value={{ estimate, update, canSubmit }}>
+    <EstimateContext.Provider value={{ estimate, update, hydrate, canSubmit }}>
       {children}
     </EstimateContext.Provider>
   )

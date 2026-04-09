@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import { useEstimate } from '@/hooks/use-estimate'
 import { calculateInvestment } from '@/lib/calculate'
 import { formatMoney, formatPercent } from '@/lib/format'
 import { ResultTable } from '@/components/result-table'
@@ -27,9 +28,23 @@ function parseParams(searchParams) {
 
 export function Result() {
   const [searchParams] = useSearchParams()
+  const { hydrate } = useEstimate()
 
   const params = useMemo(() => parseParams(searchParams), [searchParams])
   const result = useMemo(() => params && calculateInvestment(params), [params])
+
+  useEffect(() => {
+    if (params) {
+      hydrate({
+        initialAmount: params.initialAmount,
+        investmentDurationInMonths: params.investmentDurationInMonths,
+        contributionPerMonth: params.contributionPerMonth,
+        profitabilityPerMonth: params.profitabilityPerMonth,
+        incomeGrowth: params.incomeGrowth,
+        advancedOptionsEnabled: params.incomeGrowth > 0,
+      })
+    }
+  }, [params, hydrate])
 
   if (!result) {
     return (
