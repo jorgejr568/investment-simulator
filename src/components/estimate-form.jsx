@@ -14,7 +14,15 @@ export function EstimateForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (canSubmit) navigate('/resultado')
+    if (!canSubmit) return
+    const params = new URLSearchParams({
+      initialAmount: estimate.initialAmount,
+      duration: estimate.investmentDurationInMonths,
+      contribution: estimate.contributionPerMonth,
+      profitability: estimate.profitabilityPerMonth,
+      ...(estimate.incomeGrowth > 0 && { growth: estimate.incomeGrowth }),
+    })
+    navigate(`/resultado?${params}`)
   }
 
   const annualProfitability = ((estimate.profitabilityPerMonth || 0) * 12).toFixed(2).replace('.', ',')

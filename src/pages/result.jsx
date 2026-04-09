@@ -1,6 +1,5 @@
-import { useMemo, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useEstimate } from '@/hooks/use-estimate'
+import { useMemo } from 'react'
+import { useSearchParams, Link } from 'react-router-dom'
 import { calculateInvestment } from '@/lib/calculate'
 import { formatMoney, formatPercent } from '@/lib/format'
 import { ResultTable } from '@/components/result-table'
@@ -8,26 +7,40 @@ import { ResultInfo } from '@/components/result-info'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 
+function parseParams(searchParams) {
+  const initialAmount = parseFloat(searchParams.get('initialAmount'))
+  const duration = parseInt(searchParams.get('duration'), 10)
+  const contribution = parseFloat(searchParams.get('contribution'))
+  const profitability = parseFloat(searchParams.get('profitability'))
+  const growth = parseFloat(searchParams.get('growth')) || 0
+
+  if (!initialAmount || !duration || !contribution || !profitability) return null
+
+  return {
+    initialAmount,
+    investmentDurationInMonths: duration,
+    contributionPerMonth: contribution,
+    profitabilityPerMonth: profitability,
+    incomeGrowth: growth,
+  }
+}
+
 export function Result() {
-  const { estimate, canSubmit } = useEstimate()
-  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
-  useEffect(() => {
-    if (!canSubmit) navigate('/')
-  }, [canSubmit, navigate])
+  const params = useMemo(() => parseParams(searchParams), [searchParams])
+  const result = useMemo(() => params && calculateInvestment(params), [params])
 
-  const result = useMemo(() => {
-    if (!canSubmit) return null
-    return calculateInvestment({
-      initialAmount: estimate.initialAmount,
-      investmentDurationInMonths: estimate.investmentDurationInMonths,
-      contributionPerMonth: estimate.contributionPerMonth,
-      profitabilityPerMonth: estimate.profitabilityPerMonth,
-      incomeGrowth: estimate.incomeGrowth || 0,
-    })
-  }, [estimate, canSubmit])
-
-  if (!result) return null
+  if (!result) {
+    return (
+      <div className="max-w-lg mx-auto text-center space-y-4 py-12">
+        <p className="text-muted-foreground">Parâmetros inválidos ou ausentes.</p>
+        <Button asChild>
+          <Link to="/">Voltar ao simulador</Link>
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
