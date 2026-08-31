@@ -3,7 +3,7 @@ import { EstimatePreview } from '@/components/estimate-preview'
 
 export function Home() {
   return (
-    <section className="mx-auto grid min-h-[calc(100dvh-4.5rem)] w-full max-w-7xl grid-cols-1 gap-7 px-4 py-8 md:px-6 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-8 lg:py-12">
+    <section className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-7 px-4 py-8 md:px-6 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-8 lg:py-12">
       <header className="order-1 self-end lg:col-span-7">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           Planejamento de longo prazo
