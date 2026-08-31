@@ -1,12 +1,18 @@
+import { useId } from 'react'
 import { NumericFormat } from 'react-number-format'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export function CurrencyInput({ label, value, onValueChange, hint, ...props }) {
+  const id = useId()
+  const hintId = `${id}-hint`
+
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <NumericFormat
+        id={id}
+        aria-describedby={hint ? hintId : undefined}
         customInput={Input}
         thousandSeparator="."
         decimalSeparator=","
@@ -18,16 +24,21 @@ export function CurrencyInput({ label, value, onValueChange, hint, ...props }) {
         onValueChange={(values) => onValueChange(values.floatValue ?? null)}
         {...props}
       />
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p id={hintId} className="text-xs text-muted-foreground">{hint}</p>}
     </div>
   )
 }
 
 export function PercentageInput({ label, value, onValueChange, hint, ...props }) {
+  const id = useId()
+  const hintId = `${id}-hint`
+
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <NumericFormat
+        id={id}
+        aria-describedby={hint ? hintId : undefined}
         customInput={Input}
         decimalSeparator=","
         suffix=" %"
@@ -38,16 +49,21 @@ export function PercentageInput({ label, value, onValueChange, hint, ...props })
         onValueChange={(values) => onValueChange(values.floatValue ?? null)}
         {...props}
       />
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p id={hintId} className="text-xs text-muted-foreground">{hint}</p>}
     </div>
   )
 }
 
-export function MaskedNumberInput({ label, value, onValueChange, hint, format, ...props }) {
+export function MaskedNumberInput({ label, value, onValueChange, hint, ...props }) {
+  const id = useId()
+  const hintId = `${id}-hint`
+
   return (
     <div className="space-y-2">
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <NumericFormat
+        id={id}
+        aria-describedby={hint ? hintId : undefined}
         customInput={Input}
         allowNegative={false}
         decimalScale={0}
@@ -55,7 +71,7 @@ export function MaskedNumberInput({ label, value, onValueChange, hint, format, .
         onValueChange={(values) => onValueChange(values.floatValue ?? null)}
         {...props}
       />
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p id={hintId} className="text-xs text-muted-foreground">{hint}</p>}
     </div>
   )
 }

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import { useEstimate } from '@/hooks/use-estimate'
 import { CurrencyInput, PercentageInput, MaskedNumberInput } from '@/components/currency-input'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 
@@ -25,7 +24,11 @@ export function EstimateForm() {
     navigate(`/resultado?${params}`)
   }
 
-  const annualProfitability = ((estimate.profitabilityPerMonth || 0) * 12).toFixed(2).replace('.', ',')
+  const monthlyRate = (estimate.profitabilityPerMonth || 0) / 100
+  const annualProfitability = (((1 + monthlyRate) ** 12 - 1) * 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -45,13 +48,16 @@ export function EstimateForm() {
         />
         <div className="flex flex-wrap gap-1.5">
           {YEAR_OPTIONS.map((year) => (
-            <Badge
+            <Button
               key={year}
+              type="button"
+              size="sm"
               variant={year * 12 === estimate.investmentDurationInMonths ? 'default' : 'outline'}
+              aria-pressed={year * 12 === estimate.investmentDurationInMonths}
               onClick={() => update('investmentDurationInMonths', year * 12)}
             >
               {year} anos
-            </Badge>
+            </Button>
           ))}
         </div>
       </div>
@@ -66,15 +72,16 @@ export function EstimateForm() {
         label="Rentabilidade mensal estimada"
         value={estimate.profitabilityPerMonth}
         onValueChange={(v) => update('profitabilityPerMonth', v)}
-        hint={`${annualProfitability}% por ano`}
+        hint={`${annualProfitability}% ao ano`}
       />
 
       <div className="flex items-center gap-3 py-2">
         <Switch
+          id="advanced-options"
           checked={estimate.advancedOptionsEnabled}
           onCheckedChange={(v) => update('advancedOptionsEnabled', v)}
         />
-        <Label className="text-sm font-medium">Opções avançadas</Label>
+        <Label htmlFor="advanced-options" className="text-sm font-medium">Opções avançadas</Label>
       </div>
 
       {estimate.advancedOptionsEnabled && (
