@@ -62,7 +62,12 @@ export function Result() {
         <span className="grid size-12 place-items-center rounded-2xl bg-accent text-accent-foreground">
           <CircleAlert aria-hidden="true" className="size-5" strokeWidth={1.8} />
         </span>
-        <h1 className="mt-6 text-balance text-3xl font-semibold tracking-[-0.04em]">Não foi possível montar esta projeção</h1>
+        <h1
+          tabIndex={-1}
+          className="mt-6 rounded-sm text-balance text-3xl font-semibold tracking-[-0.04em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+        >
+          Não foi possível montar esta projeção
+        </h1>
         <p className="mt-3 max-w-[42ch] text-sm leading-6 text-muted-foreground">
           O link está incompleto ou contém valores inválidos. Volte ao simulador para criar um novo cenário.
         </p>
@@ -85,7 +90,10 @@ export function Result() {
           <p className="text-sm font-semibold text-muted-foreground">
             Valor final projetado em <span className="font-mono text-foreground">{formatDuration(params.investmentDurationInMonths)}</span>
           </p>
-          <h1 className="mt-4 break-words font-mono text-4xl font-medium tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+          <h1
+            tabIndex={-1}
+            className="mt-4 break-words rounded-sm font-mono text-4xl font-medium tracking-[-0.055em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:text-5xl lg:text-6xl"
+          >
             {formatMoney(result.finalAmount)}
           </h1>
           <p className="mt-5 max-w-[60ch] text-sm leading-6 text-muted-foreground">

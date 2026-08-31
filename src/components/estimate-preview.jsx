@@ -8,7 +8,10 @@ import { ChartNoAxesCombined } from 'lucide-react'
 export function EstimatePreview() {
   const { estimate, canSubmit } = useEstimate()
   const result = useMemo(
-    () => (canSubmit ? calculateInvestment(estimate) : null),
+    () => (canSubmit ? calculateInvestment({
+      ...estimate,
+      incomeGrowth: estimate.advancedOptionsEnabled ? estimate.incomeGrowth : 0,
+    }) : null),
     [canSubmit, estimate]
   )
 

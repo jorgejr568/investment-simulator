@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 import { describe, expect, test } from 'vitest'
 import { EstimateForm } from '@/components/estimate-form'
 import { EstimateProvider } from '@/hooks/use-estimate'
@@ -10,9 +10,15 @@ function renderForm() {
     <MemoryRouter>
       <EstimateProvider>
         <EstimateForm />
+        <CurrentLocation />
       </EstimateProvider>
     </MemoryRouter>
   )
+}
+
+function CurrentLocation() {
+  const location = useLocation()
+  return <output data-testid="current-location">{`${location.pathname}${location.search}`}</output>
 }
 
 describe('EstimateForm', () => {
@@ -65,5 +71,21 @@ describe('EstimateForm', () => {
     renderForm()
 
     expect(screen.getByText('7,44% ao ano')).toBeTruthy()
+  })
+
+  test('omits a hidden annual increase from the shared result URL', async () => {
+    const user = userEvent.setup()
+    renderForm()
+
+    await user.type(screen.getByLabelText('Aporte inicial'), '10000')
+    await user.type(screen.getByLabelText('Aporte mensal'), '1000')
+    await user.click(screen.getByRole('switch', { name: 'Opções avançadas' }))
+    const growth = screen.getByLabelText('Aumento anual do aporte mensal')
+    await user.clear(growth)
+    await user.type(growth, '500')
+    await user.click(screen.getByRole('switch', { name: 'Opções avançadas' }))
+    await user.click(screen.getByRole('button', { name: 'Ver projeção' }))
+
+    expect(screen.getByTestId('current-location').textContent).not.toContain('growth=')
   })
 })

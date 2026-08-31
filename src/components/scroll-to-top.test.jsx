@@ -17,18 +17,20 @@ describe('ScrollToTop', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Link to="/resultado?scenario=1">Abrir resultado</Link>} />
-          <Route path="/resultado" element={<h1>Resultado</h1>} />
-        </Routes>
+        <main id="main-content">
+          <Routes>
+            <Route path="/" element={<Link to="/resultado?scenario=1">Abrir resultado</Link>} />
+            <Route path="/resultado" element={<h1 tabIndex={-1}>Resultado</h1>} />
+          </Routes>
+        </main>
       </MemoryRouter>
     )
 
-    await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(1))
-    scrollTo.mockClear()
+    expect(scrollTo).not.toHaveBeenCalled()
     await user.click(screen.getByRole('link', { name: 'Abrir resultado' }))
 
-    expect(screen.getByRole('heading', { name: 'Resultado' })).toBeTruthy()
+    const heading = screen.getByRole('heading', { name: 'Resultado' })
+    await waitFor(() => expect(document.activeElement).toBe(heading))
     expect(scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'auto' })
   })
 })

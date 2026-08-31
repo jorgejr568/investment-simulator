@@ -20,7 +20,9 @@ export function EstimateForm() {
       duration: estimate.investmentDurationInMonths,
       contribution: estimate.contributionPerMonth,
       profitability: estimate.profitabilityPerMonth,
-      ...(estimate.incomeGrowth > 0 && { growth: estimate.incomeGrowth }),
+      ...(estimate.advancedOptionsEnabled && estimate.incomeGrowth > 0 && {
+        growth: estimate.incomeGrowth,
+      }),
     })
     navigate(`/resultado?${params}`)
   }

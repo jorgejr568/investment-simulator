@@ -8,7 +8,10 @@ export function Home() {
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           Planejamento de longo prazo
         </p>
-        <h1 className="mt-4 max-w-[13ch] text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+        <h1
+          tabIndex={-1}
+          className="mt-4 max-w-[13ch] rounded-sm text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.055em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background sm:text-5xl lg:text-6xl"
+        >
           Veja onde seus aportes podem chegar.
         </h1>
         <p className="mt-5 max-w-[52ch] text-base leading-7 text-muted-foreground">
