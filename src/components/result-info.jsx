@@ -1,14 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-
-export function ResultInfo({ label, value }) {
+export function ResultInfo({ label, value, highlight = false }) {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-2xl font-bold">{value}</p>
-      </CardContent>
-    </Card>
+    <div className="min-w-0 border-t pt-4">
+      <dt className="text-xs font-semibold text-muted-foreground">{label}</dt>
+      <dd className={`mt-2 break-words font-mono text-lg font-medium tracking-[-0.025em] sm:text-xl ${highlight ? 'text-primary' : 'text-foreground'}`}>
+        {value}
+      </dd>
+    </div>
   )
 }
