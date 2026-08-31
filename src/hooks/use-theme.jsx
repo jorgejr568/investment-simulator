@@ -12,6 +12,10 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark)
     localStorage.setItem(STORAGE_KEY, dark ? 'dark' : 'light')
+    const themeColor = document.head.querySelector('meta[name="theme-color"]')
+    if (themeColor) {
+      themeColor.setAttribute('content', dark ? '#101713' : '#f2f6f3')
+    }
   }, [dark])
 
   return (
